@@ -165,7 +165,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 @keyframes pulseSlot{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}50%{box-shadow:0 0 0 12px rgba(255,255,255,0)}}
 .slot.filled{border:3px solid #fff;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.35)}
 .slot.disabled{cursor:not-allowed;opacity:.7}.slot.disabled:hover{transform:translate(-50%,-50%) scale(1)}
-.slot img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.slot img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:top}
 .player-name-tag{position:absolute;bottom:-20px;background:rgba(15,23,42,.85);color:#fff;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:8px;white-space:nowrap;pointer-events:none}
 .tip-badge{position:absolute;top:-6px;right:-6px;background:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.7rem;box-shadow:0 4px 10px rgba(0,0,0,.25);border:2px solid var(--secondary);z-index:15}
 
@@ -192,7 +192,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .visual-select-btn{width:100%;padding:12px 14px;border:2px solid #e2e8f0;border-radius:14px;background:#f8fafc;display:flex;align-items:center;gap:12px;cursor:pointer;transition:var(--transition);font-family:Poppins}
 .visual-select-btn:hover{border-color:var(--primary);background:#eff6ff}
 .visual-select-btn.disabled{opacity:.5;pointer-events:none}
-.visual-select-btn img{width:42px;height:42px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,.1);border:2px solid #fff}
+.visual-select-btn img{width:42px;height:42px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,.1);border:2px solid #fff;object-fit:cover;object-position:top}
 .icon-placeholder{width:42px;height:42px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:1.1rem;flex-shrink:0}
 .vs-text{flex:1;font-weight:700;font-size:.95rem}.vs-pos{font-size:.72rem;color:#fff;background:var(--primary);padding:3px 8px;border-radius:8px;font-weight:600}
 .btn-save{width:100%;padding:16px;background:linear-gradient(135deg,var(--success),#059669);color:#fff;border:none;border-radius:16px;font-size:1.05rem;font-weight:800;cursor:pointer;box-shadow:0 10px 25px rgba(16,185,129,.25);display:flex;justify-content:center;align-items:center;gap:10px;margin-top:.5rem;font-family:Poppins;transition:var(--transition);letter-spacing:.5px}
@@ -215,7 +215,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .lb-item.is-me{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:var(--primary-light)}
 .lb-rank{font-weight:900;min-width:28px;text-align:center;color:var(--text-muted);font-size:1rem}
 .lb-rank.gold{color:#f59e0b}.lb-rank.silver{color:#94a3b8}.lb-rank.bronze{color:#cd7f32}
-.lb-item img{width:38px;height:38px;border-radius:50%;border:2px solid #e2e8f0}
+.lb-item img{width:38px;height:38px;border-radius:50%;border:2px solid #e2e8f0;object-fit:cover;object-position:top}
 .lb-name{flex:1;font-weight:700;font-size:.9rem}.lb-pts{font-weight:900;color:var(--primary);font-size:.95rem}
 .btn-outline{width:100%;padding:13px;border:2px solid #e2e8f0;background:transparent;color:var(--text-muted);font-weight:700;font-size:.9rem;border-radius:14px;cursor:pointer;transition:var(--transition);margin-top:8px;font-family:Poppins;display:flex;justify-content:center;align-items:center;gap:8px}
 .btn-outline:hover{border-color:var(--primary);color:var(--primary);background:#f0f7ff}
@@ -243,14 +243,14 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .player-item{display:flex;align-items:center;gap:12px;padding:11px;border-radius:14px;cursor:pointer;border:2px solid transparent;background:#f8fafc;margin-bottom:8px;transition:var(--transition)}
 .player-item:hover{border-color:var(--primary-light);background:#fff;transform:translateX(4px)}
 .player-item.selected{opacity:.4;pointer-events:none;filter:grayscale(1)}
-.player-item img{width:42px;height:42px;border-radius:50%;border:2px solid #e2e8f0}
+.player-item img{width:42px;height:42px;border-radius:50%;border:2px solid #e2e8f0;object-fit:cover;object-position:top}
 .player-info-container{flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .player-name{font-weight:700;font-size:.95rem}.player-pos-full{font-size:.68rem;color:#fff;background:var(--primary);padding:3px 7px;border-radius:8px;font-weight:700;text-transform:uppercase}
 .action-grid{display:grid;gap:10px}
 .action-btn{padding:14px 16px;border-radius:14px;border:none;font-family:Poppins;font-weight:800;font-size:.9rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:var(--transition)}
 .action-btn:hover{transform:translateY(-2px)}.btn-goal{background:#fef3c7;color:#b45309;border:2px solid #fde68a}.btn-assist{background:#dcfce7;color:#166534;border:2px solid #bbf7d0}.btn-delete{background:#fee2e2;color:var(--danger);border:2px solid #fecaca}
 .profile-header{text-align:center;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid #f1f5f9}
-.profile-header img{width:85px;height:85px;border-radius:50%;border:4px solid var(--primary);margin-bottom:8px;box-shadow:0 10px 25px rgba(0,0,0,.12)}
+.profile-header img{width:85px;height:85px;border-radius:50%;border:4px solid var(--primary);margin-bottom:8px;box-shadow:0 10px 25px rgba(0,0,0,.12);object-fit:cover;object-position:top}
 .profile-header h2{margin:0 0 4px;font-size:1.3rem}
 .profile-stat{background:#f8fafc;padding:13px 14px;border-radius:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px;border:1px solid #e2e8f0}
 .profile-stat i{font-size:1.2rem;color:var(--primary);width:26px;text-align:center}
@@ -577,11 +577,14 @@ const db = firebase.database();
 const getAvatar=(n)=>`https://ui-avatars.com/api/?name=${encodeURIComponent(n)}&background=004b87&color=fff&bold=true&size=128`;
 const fullPositions={B:'Brankář',O:'Obránce',Z:'Záložník',Ú:'Útočník'};
 const players=[
-  {id:1,name:"Macík",pos:"B"},{id:2,name:"Stoppen",pos:"B"},
-  {id:3,name:"Vraštil",pos:"O"},{id:4,name:"Pokorný",pos:"O"},{id:5,name:"Novák",pos:"O"},{id:6,name:"Sláma",pos:"O"},{id:7,name:"Chvátal",pos:"O"},
-  {id:8,name:"Breite",pos:"Z"},{id:9,name:"Pospíšil",pos:"Z"},{id:10,name:"Zorvan",pos:"Z"},{id:11,name:"Vodháněl",pos:"Z"},{id:12,name:"Navrátil",pos:"Z"},{id:13,name:"Spáčil",pos:"Z"},
-  {id:14,name:"Juliš",pos:"Ú"},{id:15,name:"Fiala",pos:"Ú"},{id:16,name:"Muritala",pos:"Ú"}
-].map(p=>({...p,img:getAvatar(p.name),posFull:fullPositions[p.pos]}));
+  {id:1,name:"Digaňa Tomáš",number:1,pos:"B",img:"https://sigmafotbal.esports.cz/foto/2025_Fotky-hracu-A-25-26/digana-tomas.png?1752651890"},
+  {id:2,name:"Hruška Matúš",number:98,pos:"B",img:"https://sigmafotbal.esports.cz/foto/2025_Fotky-hracu-A-25-26/hruska-matus.png?1752403611"},
+  {id:3,name:"Koutný Jan",number:91,pos:"B",img:"https://sigmafotbal.esports.cz/foto/2025_Fotky-hracu-A-25-26/koutny-jan.png?1752403638"},
+  {id:4,name:"Stoppen Tadeáš",number:29,pos:"B",img:"https://sigmafotbal.esports.cz/foto/2025_Fotky-hracu-A-25-26/stoppen-tadeas.png?1752403700"},
+  {id:5,name:"Vraštil",pos:"O"},{id:6,name:"Pokorný",pos:"O"},{id:7,name:"Novák",pos:"O"},{id:8,name:"Sláma",pos:"O"},{id:9,name:"Chvátal",pos:"O"},
+  {id:10,name:"Breite",pos:"Z"},{id:11,name:"Pospíšil",pos:"Z"},{id:12,name:"Zorvan",pos:"Z"},{id:13,name:"Vodháněl",pos:"Z"},{id:14,name:"Navrátil",pos:"Z"},{id:15,name:"Spáčil",pos:"Z"},
+  {id:16,name:"Juliš",pos:"Ú"},{id:17,name:"Fiala",pos:"Ú"},{id:18,name:"Muritala",pos:"Ú"}
+].map(p=>({...p,img:p.img||getAvatar(p.name),posFull:fullPositions[p.pos]}));
 
 const formations={
   '4-2-3-1':[{top:88,left:50},{top:70,left:15},{top:73,left:38},{top:73,left:62},{top:70,left:85},{top:56,left:35},{top:56,left:65},{top:38,left:20},{top:40,left:50},{top:38,left:80},{top:18,left:50}],
