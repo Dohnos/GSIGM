@@ -1061,13 +1061,16 @@ function handleSlotClick(i){
   }
 }
 
+function shouldDisableSlot(pid){
+  return gamePhase!=='open'&&(gamePhase!=='lineup_locked'||!pid);
+}
+
 function renderPlayersInSlots(){
   for(let i=0;i<11;i++){
     const s=document.getElementById(`slot-${i}`);if(!s) continue;
     const pid=currentPrediction.lineup[i];
     s.className='slot';
-    const shouldDisable=gamePhase!=='open'&&(gamePhase!=='lineup_locked'||!pid);
-    if(shouldDisable) s.classList.add('disabled');
+    if(shouldDisableSlot(pid)) s.classList.add('disabled');
 
     if(pid){
       const p=players.find(x=>x.id==pid);if(!p) continue;
@@ -1209,8 +1212,8 @@ function ensurePredictionEntry(){
   if(!currentMatchId||!currentUser) return;
   db.ref(`predictions/${currentMatchId}/${currentUser.id}`).once('value',snap=>{
     if(snap.exists()) return;
-    const scoreHome=Number.isFinite(currentPrediction.scoreHome)?currentPrediction.scoreHome:null;
-    const scoreAway=Number.isFinite(currentPrediction.scoreAway)?currentPrediction.scoreAway:null;
+    const scoreHome=parseOptionalInt(currentPrediction.scoreHome);
+    const scoreAway=parseOptionalInt(currentPrediction.scoreAway);
     const data={...currentPrediction,scoreHome,scoreAway,savedAt:Date.now()};
     db.ref(`predictions/${currentMatchId}/${currentUser.id}`).set(data).catch(e=>console.warn("Prediction seed failed",e));
   });
