@@ -1066,7 +1066,7 @@ function renderPlayersInSlots(){
     const s=document.getElementById(`slot-${i}`);if(!s) continue;
     const pid=currentPrediction.lineup[i];
     s.className='slot';
-    const shouldDisable=gamePhase!=='open'&&!(gamePhase==='lineup_locked'&&pid);
+    const shouldDisable=gamePhase!=='open'&&(gamePhase!=='lineup_locked'||!pid);
     if(shouldDisable) s.classList.add('disabled');
 
     if(pid){
