@@ -1066,7 +1066,8 @@ function renderPlayersInSlots(){
     const s=document.getElementById(`slot-${i}`);if(!s) continue;
     const pid=currentPrediction.lineup[i];
     s.className='slot';
-    if(gamePhase!=='open'&&!(gamePhase==='lineup_locked'&&pid)) s.classList.add('disabled');
+    const shouldDisable=gamePhase!=='open'&&!(gamePhase==='lineup_locked'&&pid);
+    if(shouldDisable) s.classList.add('disabled');
 
     if(pid){
       const p=players.find(x=>x.id==pid);if(!p) continue;
@@ -1210,7 +1211,7 @@ function ensurePredictionEntry(){
     const scoreHome=Number.isFinite(currentPrediction.scoreHome)?currentPrediction.scoreHome:null;
     const scoreAway=Number.isFinite(currentPrediction.scoreAway)?currentPrediction.scoreAway:null;
     const data={...currentPrediction,scoreHome,scoreAway,savedAt:Date.now()};
-    db.ref(`predictions/${currentMatchId}/${currentUser.id}`).set(data).catch(()=>{});
+    db.ref(`predictions/${currentMatchId}/${currentUser.id}`).set(data).catch(e=>console.warn("Prediction seed failed",e));
   });
 }
 
