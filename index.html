@@ -798,8 +798,7 @@ function setupRegCityAutocomplete(){
         data.forEach(item=>{
           const address=item.address||{};
           const cityName=cityKeys.map((key)=>address[key]).find(Boolean);
-          const countryCode=(address.country_code||'').toLowerCase();
-          if(!cityName||(countryCode&&countryCode!=='cz')||seen.has(cityName)) return;
+          if(!cityName||seen.has(cityName)) return;
           seen.add(cityName);
           const option=document.createElement('option');
           option.value=cityName;
@@ -1319,7 +1318,8 @@ function ensurePredictionEntry(){
    ============================================================ */
 function showEvaluation(){
   const evalCard=document.getElementById('eval-card');
-  if(!currentMatch||!currentMatch.results||!currentUser||!currentUser.id){evalCard.classList.remove('show');return;}
+  if(!currentMatch||!currentMatch.results){evalCard.classList.remove('show');return;}
+  if(!currentUser||!currentUser.id){evalCard.classList.remove('show');return;}
   const preds=(allPredictions[currentMatchId]||{})[currentUser.id];
   if(!preds){evalCard.classList.remove('show');return;}
 
