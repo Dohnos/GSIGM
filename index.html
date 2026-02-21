@@ -1062,7 +1062,9 @@ function handleSlotClick(i){
 }
 
 function shouldDisableSlot(pid){
-  return gamePhase!=='open'&&(gamePhase!=='lineup_locked'||!pid);
+  const isOpen=gamePhase==='open';
+  const isLockedWithPlayer=gamePhase==='lineup_locked'&&pid;
+  return !isOpen&&!isLockedWithPlayer;
 }
 
 function renderPlayersInSlots(){
@@ -1215,7 +1217,7 @@ function ensurePredictionEntry(){
     const scoreHome=parseOptionalInt(currentPrediction.scoreHome);
     const scoreAway=parseOptionalInt(currentPrediction.scoreAway);
     const data={...currentPrediction,scoreHome,scoreAway,savedAt:Date.now()};
-    db.ref(`predictions/${currentMatchId}/${currentUser.id}`).set(data).catch(e=>console.warn("Prediction seed failed",e));
+    db.ref(`predictions/${currentMatchId}/${currentUser.id}`).set(data).catch(e=>console.warn("Prediction seed failed",{matchId:currentMatchId,userId:currentUser.id,error:e}));
   });
 }
 
