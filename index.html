@@ -767,11 +767,12 @@ function populateRegSelects(){
   // nahrazeno modálem s fotkami (openRegPlayerSelect)
 }
 
+const cityAddressFields=['city','town','village','municipality','hamlet'];
+
 function setupRegCityAutocomplete(){
   const input=document.getElementById('reg-city');
   const list=document.getElementById('reg-city-list');
   if(!input||!list) return;
-  const cityAddressFields=['city','town','village','municipality','hamlet'];
   const debounceDelay=400;
   const minInterval=1000;
   let timeoutId=null;
@@ -799,10 +800,11 @@ function setupRegCityAutocomplete(){
           const address=item.address||{};
           const matchedCityField=cityAddressFields.find((key)=>address[key]);
           const cityName=matchedCityField?address[matchedCityField]:'';
-          if(!cityName||seen.has(cityName)) return;
-          seen.add(cityName);
+          const normalizedCity=cityName.trim();
+          if(!normalizedCity||seen.has(normalizedCity)) return;
+          seen.add(normalizedCity);
           const option=document.createElement('option');
-          option.value=cityName;
+          option.value=normalizedCity;
           list.appendChild(option);
         });
       })
@@ -1319,8 +1321,8 @@ function ensurePredictionEntry(){
    ============================================================ */
 function showEvaluation(){
   const evalCard=document.getElementById('eval-card');
-  const hasRequiredEvaluationData=!!(currentMatch&&currentMatch.results&&currentUser&&currentUser.id);
-  if(!hasRequiredEvaluationData){evalCard.classList.remove('show');return;}
+  const hasEvaluationData=!!(currentMatch&&currentMatch.results&&currentUser&&currentUser.id);
+  if(!hasEvaluationData){evalCard.classList.remove('show');return;}
   const preds=(allPredictions[currentMatchId]||{})[currentUser.id];
   if(!preds){evalCard.classList.remove('show');return;}
 
