@@ -345,7 +345,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
       <input type="text" id="reg-city" class="reg-input" placeholder="Odkud fandíš? (min. 3 znaky)" list="reg-city-list" autocomplete="off" aria-label="Vyberte město, odkud fandíte">
       <datalist id="reg-city-list"></datalist>
       <button type="button" id="reg-player-btn" class="reg-input" style="text-align:left;display:flex;align-items:center;gap:10px;cursor:pointer;background:#fff;" onclick="openRegPlayerSelect()">
-        <img id="reg-player-img" src="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;display:none;">
+        <img id="reg-player-img" src="" style="width:36px;height:48px;border-radius:8px;object-fit:cover;object-position:top;display:none;">
         <span id="reg-player-label" style="color:#94a3b8;">Oblíbený hráč?</span>
       </button>
       <input type="hidden" id="reg-player" value="">
@@ -771,6 +771,7 @@ function setupRegCityAutocomplete(){
   const input=document.getElementById('reg-city');
   const list=document.getElementById('reg-city-list');
   if(!input||!list) return;
+  const cityKeys=['city','town','village','municipality','hamlet'];
   const debounceDelay=400;
   const minInterval=1000;
   let timeoutId=null;
@@ -779,7 +780,7 @@ function setupRegCityAutocomplete(){
   const runFetch=(query)=>{
     if(input.value.trim()!==query) return;
     lastFetchAt=Date.now();
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=6&accept-language=cs&q=${encodeURIComponent(query)}`,{
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=6&accept-language=cs&countrycodes=cz&addressdetails=1&q=${encodeURIComponent(query)}`,{
       headers:{
         'Accept-Language':'cs',
         'User-Agent':'Sigma Fantasy (contact: info@sigmafantasy.cz)'
@@ -793,9 +794,15 @@ function setupRegCityAutocomplete(){
         if(input.value.trim()!==query) return;
         errorShown=false;
         list.innerHTML='';
+        const seen=new Set();
         data.forEach(item=>{
+          const address=item.address||{};
+          const cityName=cityKeys.map((key)=>address[key]).find(Boolean);
+          const countryCode=(address.country_code||'').toLowerCase();
+          if(!cityName||(countryCode&&countryCode!=='cz')||seen.has(cityName)) return;
+          seen.add(cityName);
           const option=document.createElement('option');
-          option.value=item.display_name;
+          option.value=cityName;
           list.appendChild(option);
         });
       })
@@ -1311,8 +1318,8 @@ function ensurePredictionEntry(){
    EVALUATION DISPLAY
    ============================================================ */
 function showEvaluation(){
-  if(!currentMatch||!currentMatch.results) return;
   const evalCard=document.getElementById('eval-card');
+  if(!currentMatch||!currentMatch.results||!currentUser||!currentUser.id){evalCard.classList.remove('show');return;}
   const preds=(allPredictions[currentMatchId]||{})[currentUser.id];
   if(!preds){evalCard.classList.remove('show');return;}
 
