@@ -771,7 +771,7 @@ function setupRegCityAutocomplete(){
   const input=document.getElementById('reg-city');
   const list=document.getElementById('reg-city-list');
   if(!input||!list) return;
-  const cityKeys=['city','town','village','municipality','hamlet'];
+  const cityAddressFields=['city','town','village','municipality','hamlet'];
   const debounceDelay=400;
   const minInterval=1000;
   let timeoutId=null;
@@ -797,7 +797,8 @@ function setupRegCityAutocomplete(){
         const seen=new Set();
         data.forEach(item=>{
           const address=item.address||{};
-          const cityName=cityKeys.map((key)=>address[key]).find(Boolean);
+          const cityKey=cityAddressFields.find((key)=>address[key]);
+          const cityName=cityKey?address[cityKey]:'';
           if(!cityName||seen.has(cityName)) return;
           seen.add(cityName);
           const option=document.createElement('option');
@@ -1318,7 +1319,7 @@ function ensurePredictionEntry(){
    ============================================================ */
 function showEvaluation(){
   const evalCard=document.getElementById('eval-card');
-  const shouldShowEval=currentMatch&&currentMatch.results&&currentUser&&currentUser.id;
+  const shouldShowEval=!!(currentMatch&&currentMatch.results&&currentUser&&currentUser.id);
   if(!shouldShowEval){evalCard.classList.remove('show');return;}
   const preds=(allPredictions[currentMatchId]||{})[currentUser.id];
   if(!preds){evalCard.classList.remove('show');return;}
