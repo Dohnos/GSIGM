@@ -1318,8 +1318,8 @@ function ensurePredictionEntry(){
    ============================================================ */
 function showEvaluation(){
   const evalCard=document.getElementById('eval-card');
-  if(!currentMatch||!currentMatch.results){evalCard.classList.remove('show');return;}
-  if(!currentUser||!currentUser.id){evalCard.classList.remove('show');return;}
+  const shouldHideEval=!currentMatch||!currentMatch.results||!currentUser||!currentUser.id;
+  if(shouldHideEval){evalCard.classList.remove('show');return;}
   const preds=(allPredictions[currentMatchId]||{})[currentUser.id];
   if(!preds){evalCard.classList.remove('show');return;}
 
