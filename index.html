@@ -344,7 +344,11 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
       <input type="email" id="reg-email" class="reg-input" placeholder="E-mail" aria-label="Zadejte váš email">
       <input type="text" id="reg-city" class="reg-input" placeholder="Odkud fandíš? (min. 3 znaky)" list="reg-city-list" autocomplete="off" aria-label="Vyberte město, odkud fandíte">
       <datalist id="reg-city-list"></datalist>
-      <select id="reg-player" class="reg-input"><option value="">Oblíbený hráč?</option></select>
+      <button type="button" id="reg-player-btn" class="reg-input" style="text-align:left;display:flex;align-items:center;gap:10px;cursor:pointer;background:#fff;" onclick="openRegPlayerSelect()">
+        <img id="reg-player-img" src="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;display:none;">
+        <span id="reg-player-label" style="color:#94a3b8;">Oblíbený hráč?</span>
+      </button>
+      <input type="hidden" id="reg-player" value="">
       <button class="btn-save" onclick="registerUser()"><i class="fa-solid fa-user-plus"></i> Registrovat</button>
       <div class="auth-back" onclick="backToHero()"><i class="fa-solid fa-arrow-left"></i> Zpět na úvod</div>
     </div>
@@ -760,9 +764,7 @@ function switchAuthTab(tab){
 function backToHero(){document.getElementById('section-auth').style.display='none';document.getElementById('section-hero').style.display='flex';window.scrollTo({top:0});}
 
 function populateRegSelects(){
-  const sel=document.getElementById('reg-player');
-  sel.innerHTML='<option value="">Oblíbený hráč?</option>';
-  [...players].sort((a,b)=>a.name.localeCompare(b.name)).forEach(p=>sel.add(new Option(`${p.name} (${p.posFull})`,p.name)));
+  // nahrazeno modálem s fotkami (openRegPlayerSelect)
 }
 
 function setupRegCityAutocomplete(){
@@ -1403,6 +1405,29 @@ function setupAdminLists(){
       c.appendChild(btn);
     });
   });
+}
+
+function openRegPlayerSelect(){
+  modalContext='regPlayer';
+  const list=document.getElementById('player-list');
+  list.innerHTML='';
+  document.getElementById('modal-title').innerHTML='⭐ Oblíbený hráč';
+  [...players].sort((a,b)=>a.name.localeCompare(b.name)).forEach(p=>{
+    const div=document.createElement('div');
+    div.className='player-item';
+    div.innerHTML=`<img src="${p.img}"><div class="player-info-container"><span class="player-name">${p.name}</span><span class="player-pos-full">${p.posFull}</span></div>`;
+    div.onclick=()=>{
+      document.getElementById('reg-player').value=p.name;
+      document.getElementById('reg-player-label').textContent=p.name;
+      document.getElementById('reg-player-label').style.color='var(--text-main)';
+      const img=document.getElementById('reg-player-img');
+      img.src=p.img;
+      img.style.display='block';
+      closeModal('player-modal');
+    };
+    list.appendChild(div);
+  });
+  openModal('player-modal');
 }
 
 function openAdminScorerSelect(){
