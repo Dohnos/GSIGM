@@ -771,7 +771,7 @@ function setupRegCityAutocomplete(){
   const input=document.getElementById('reg-city');
   const list=document.getElementById('reg-city-list');
   if(!input||!list) return;
-  const addressFieldKeys=['city','town','village','municipality','hamlet'];
+  const cityAddressFields=['city','town','village','municipality','hamlet'];
   const debounceDelay=400;
   const minInterval=1000;
   let timeoutId=null;
@@ -797,8 +797,8 @@ function setupRegCityAutocomplete(){
         const seen=new Set();
         data.forEach(item=>{
           const address=item.address||{};
-          const cityKey=addressFieldKeys.find((key)=>address[key]);
-          const cityName=cityKey?address[cityKey]:'';
+          const matchedCityField=cityAddressFields.find((key)=>address[key]);
+          const cityName=matchedCityField?address[matchedCityField]:'';
           if(!cityName||seen.has(cityName)) return;
           seen.add(cityName);
           const option=document.createElement('option');
