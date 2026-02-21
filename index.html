@@ -643,6 +643,7 @@ let currentUser=null;
 let currentMatchId=null;
 let currentMatch=null;
 let currentPrediction={formation:'4-2-3-1',lineup:new Array(11).fill(null),scorer:null,totalGoals:null,scoreHome:null,scoreAway:null,attendance:'',playerTips:{}};
+function normalizeLineup(v){if(Array.isArray(v)) return v;const a=new Array(11).fill(null);if(v&&typeof v==='object') Object.keys(v).forEach(k=>{const i=parseInt(k);if(!isNaN(i)&&i>=0&&i<11) a[i]=v[k];});return a;}
 let activeSlotIndex=null;
 let modalContext='lineup';
 let gamePhase='open'; // open | lineup_locked | all_locked | waiting | evaluated
@@ -1172,6 +1173,8 @@ function loadMyPrediction(){
   const pred=(allPredictions[currentMatchId]||{})[currentUser.id];
   if(pred){
     currentPrediction={...currentPrediction,...pred};
+    currentPrediction.lineup=normalizeLineup(currentPrediction.lineup);
+    if(!currentPrediction.playerTips||typeof currentPrediction.playerTips!=='object') currentPrediction.playerTips={};
     if(pred.scoreHome!=null) document.getElementById('pred-score-home').value=pred.scoreHome;
     if(pred.scoreAway!=null) document.getElementById('pred-score-away').value=pred.scoreAway;
     document.getElementById('attendance').value=pred.attendance||'';
@@ -1197,7 +1200,8 @@ function showEvaluation(){
   const r=currentMatch.results;
   let total=0;const rows=[];
 
-  if(preds.lineup&&preds.lineup.filter(Boolean).length===11){total+=11;rows.push(['Kompletní sestava','+11']);}
+  const predsLineup=normalizeLineup(preds.lineup);
+  if(predsLineup.filter(Boolean).length===11){total+=11;rows.push(['Kompletní sestava','+11']);}
 
   if(preds.scoreHome==r.scoreHome&&preds.scoreAway==r.scoreAway){total+=10;rows.push(['Přesné skóre','+10']);}
   else{
@@ -1320,7 +1324,7 @@ function evaluateMatch(){
 
   Object.entries(matchPreds).forEach(([uid,pred])=>{
     let pts=0;
-    if(pred.lineup&&pred.lineup.filter(Boolean).length===11) pts+=11;
+    if(normalizeLineup(pred.lineup).filter(Boolean).length===11) pts+=11;
     if(pred.scoreHome==sh&&pred.scoreAway==sa) pts+=10;
     else{const o=Math.sign(sh-sa);const uo=Math.sign((pred.scoreHome||0)-(pred.scoreAway||0));if(o===uo) pts+=3;}
     if(pred.scorer==adminFirstScorer) pts+=5;
@@ -1394,7 +1398,7 @@ function renderMatchHistory(){
     const r=m.results||{};
     const tags=[];
     if(isEval&&r.scoreHome!=null){
-      if(pred.lineup&&pred.lineup.filter(Boolean).length===11) tags.push('Sestava +11');
+      if(normalizeLineup(pred.lineup).filter(Boolean).length===11) tags.push('Sestava +11');
       if(pred.scoreHome==r.scoreHome&&pred.scoreAway==r.scoreAway) tags.push('Přesné skóre +10');
       else{const o=Math.sign(r.scoreHome-r.scoreAway);const uo=Math.sign((pred.scoreHome||0)-(pred.scoreAway||0));if(o===uo) tags.push('Tip V/R/P +3');}
       if(pred.scorer==r.firstScorer) tags.push('1. střelec +5');
