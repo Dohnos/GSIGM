@@ -795,14 +795,14 @@ function setupRegCityAutocomplete(){
         if(input.value.trim()!==query) return;
         errorShown=false;
         list.innerHTML='';
-        const seen=new Set();
+        const seenCities=new Set();
         data.forEach(item=>{
           const address=item.address||{};
-          const matchedCityField=cityAddressFields.find((key)=>address[key]);
-          const cityName=matchedCityField?address[matchedCityField]:'';
+          const matchedCityFieldKey=cityAddressFields.find((key)=>address[key]);
+          const cityName=matchedCityFieldKey?address[matchedCityFieldKey]:'';
           const normalizedCity=cityName.trim();
-          if(!normalizedCity||seen.has(normalizedCity)) return;
-          seen.add(normalizedCity);
+          if(!normalizedCity||seenCities.has(normalizedCity)) return;
+          seenCities.add(normalizedCity);
           const option=document.createElement('option');
           option.value=normalizedCity;
           list.appendChild(option);
