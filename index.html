@@ -788,7 +788,8 @@ function loginUser(){
 }
 
 function logoutUser(){
-  localStorage.removeItem('sigma_session');
+  localStorage.clear();
+  sessionStorage.clear();
   currentUser=null;
   if(countdownInterval) clearInterval(countdownInterval);
   closeModal('profile-modal');
@@ -841,6 +842,7 @@ function pickCurrentMatch(){
     currentMatch=best;
     updateMatchWidget();
     loadMyPrediction();
+    if(currentUser) ensurePredictionEntry();
   }else{
     currentMatchId=null;
     currentMatch=null;
@@ -1064,7 +1066,7 @@ function renderPlayersInSlots(){
     const s=document.getElementById(`slot-${i}`);if(!s) continue;
     const pid=currentPrediction.lineup[i];
     s.className='slot';
-    if(gamePhase!=='open') s.classList.add(gamePhase==='lineup_locked'&&pid?'':'disabled');
+    if(gamePhase!=='open'&&!(gamePhase==='lineup_locked'&&pid)) s.classList.add('disabled');
 
     if(pid){
       const p=players.find(x=>x.id==pid);if(!p) continue;
@@ -1161,13 +1163,17 @@ function savePrediction(){
 }
 
 let autosaveTimer=null;
+function parseOptionalInt(value){
+  const parsed=parseInt(value,10);
+  return Number.isFinite(parsed)?parsed:null;
+}
 function autoSave(){
   if(!currentMatchId||!currentUser) return;
   if(gamePhase==='all_locked'||gamePhase==='waiting'||gamePhase==='evaluated') return;
   clearTimeout(autosaveTimer);
   autosaveTimer=setTimeout(()=>{
-    currentPrediction.scoreHome=parseInt(document.getElementById('pred-score-home').value);
-    currentPrediction.scoreAway=parseInt(document.getElementById('pred-score-away').value);
+    currentPrediction.scoreHome=parseOptionalInt(document.getElementById('pred-score-home').value);
+    currentPrediction.scoreAway=parseOptionalInt(document.getElementById('pred-score-away').value);
     currentPrediction.attendance=document.getElementById('attendance').value;
     const data={...currentPrediction,savedAt:Date.now()};
     db.ref(`predictions/${currentMatchId}/${currentUser.id}`).set(data).then(()=>{
@@ -1195,6 +1201,17 @@ function loadMyPrediction(){
     updatePitchPositions();
     document.querySelectorAll('#formation-tabs .form-btn').forEach(b=>b.classList.toggle('active',b.innerText===currentPrediction.formation));
   }
+}
+
+function ensurePredictionEntry(){
+  if(!currentMatchId||!currentUser) return;
+  db.ref(`predictions/${currentMatchId}/${currentUser.id}`).once('value',snap=>{
+    if(snap.exists()) return;
+    const scoreHome=Number.isFinite(currentPrediction.scoreHome)?currentPrediction.scoreHome:null;
+    const scoreAway=Number.isFinite(currentPrediction.scoreAway)?currentPrediction.scoreAway:null;
+    const data={...currentPrediction,scoreHome,scoreAway,savedAt:Date.now()};
+    db.ref(`predictions/${currentMatchId}/${currentUser.id}`).set(data).catch(()=>{});
+  });
 }
 
 /* ============================================================
