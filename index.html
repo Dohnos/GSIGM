@@ -1318,8 +1318,8 @@ function ensurePredictionEntry(){
    ============================================================ */
 function showEvaluation(){
   const evalCard=document.getElementById('eval-card');
-  const shouldHideEval=!currentMatch||!currentMatch.results||!currentUser||!currentUser.id;
-  if(shouldHideEval){evalCard.classList.remove('show');return;}
+  const shouldShowEval=currentMatch&&currentMatch.results&&currentUser&&currentUser.id;
+  if(!shouldShowEval){evalCard.classList.remove('show');return;}
   const preds=(allPredictions[currentMatchId]||{})[currentUser.id];
   if(!preds){evalCard.classList.remove('show');return;}
 
@@ -1429,6 +1429,7 @@ function openRegPlayerSelect(){
       document.getElementById('reg-player-label').style.color='var(--text-main)';
       const img=document.getElementById('reg-player-img');
       img.src=p.img;
+      img.alt=`Oblíbený hráč: ${p.name}`;
       img.style.display='block';
       closeModal('player-modal');
     };
