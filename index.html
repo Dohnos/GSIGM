@@ -341,8 +341,8 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
       <h2>Vytvoř si profil ✨</h2>
       <input type="text" id="reg-name" class="reg-input" placeholder="Přezdívka">
       <input type="password" id="reg-pin" class="reg-input" placeholder="PIN (min 4 znaky)">
-      <input type="email" id="reg-email" class="reg-input" placeholder="Email">
-      <input type="text" id="reg-city" class="reg-input" placeholder="Odkud fandíš?" list="reg-city-list" autocomplete="off">
+      <input type="email" id="reg-email" class="reg-input" placeholder="E-mail" aria-label="Zadejte váš email">
+      <input type="text" id="reg-city" class="reg-input" placeholder="Odkud fandíš? (min. 3 znaky)" list="reg-city-list" autocomplete="off" aria-label="Vyberte město, odkud fandíte">
       <datalist id="reg-city-list"></datalist>
       <select id="reg-player" class="reg-input"><option value="">Oblíbený hráč?</option></select>
       <button class="btn-save" onclick="registerUser()"><i class="fa-solid fa-user-plus"></i> Registrovat</button>
@@ -585,7 +585,10 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
    🔥 FIREBASE CONFIG — NAHRAĎ SVÝMI ÚDAJI
    ============================================================ */
 const sigmaLogoUrl="https://sigmafotbal.esports.cz/files/logos/SK%20SIGMA.png";
-document.querySelectorAll('[data-sigma-logo]').forEach((img)=>{img.src=sigmaLogoUrl;});
+document.querySelectorAll('[data-sigma-logo]').forEach((img)=>{
+  img.src=sigmaLogoUrl;
+  img.onerror=()=>{img.style.display='none';};
+});
 const firebaseConfig = {
   apiKey: "AIzaSyANSwvhcNvpNDgEBSpGjgqxoOB_1nG389M",
   authDomain: "gsigm-a71ec.firebaseapp.com",
@@ -766,35 +769,66 @@ function setupRegCityAutocomplete(){
   const input=document.getElementById('reg-city');
   const list=document.getElementById('reg-city-list');
   if(!input||!list) return;
+  const debounceDelay=400;
+  const minInterval=1000;
   let timeoutId=null;
+  let errorShown=false;
+  let lastFetchAt=0;
+  const runFetch=(query)=>{
+    if(input.value.trim()!==query) return;
+    lastFetchAt=Date.now();
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=6&accept-language=cs&q=${encodeURIComponent(query)}`,{
+      headers:{
+        'Accept-Language':'cs',
+        'User-Agent':'Sigma Fantasy (contact: info@sigmafantasy.cz)'
+      }
+    })
+      .then(res=>{
+        if(!res.ok) throw new Error(`Autocomplete request failed (${res.status})`);
+        return res.json();
+      })
+      .then(data=>{
+        if(input.value.trim()!==query) return;
+        errorShown=false;
+        list.innerHTML='';
+        data.forEach(item=>{
+          const option=document.createElement('option');
+          option.value=item.display_name;
+          list.appendChild(option);
+        });
+      })
+      .catch(()=>{
+        list.innerHTML='';
+        if(!errorShown){
+          showToast("Našeptávač adres není dostupný, zadejte město ručně","error");
+          errorShown=true;
+        }
+      });
+  };
   input.addEventListener('input',()=>{
     const query=input.value.trim();
     if(timeoutId) clearTimeout(timeoutId);
     if(query.length<3){list.innerHTML='';return;}
     timeoutId=setTimeout(()=>{
-      fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=6&accept-language=cs&q=${encodeURIComponent(query)}`)
-        .then(res=>res.json())
-        .then(data=>{
-          if(input.value.trim()!==query) return;
-          list.innerHTML='';
-          data.forEach(item=>{
-            const option=document.createElement('option');
-            option.value=item.display_name;
-            list.appendChild(option);
-          });
-        })
-        .catch(()=>{list.innerHTML='';});
-    },250);
+      const wait=minInterval-(Date.now()-lastFetchAt);
+      if(wait>0){
+        timeoutId=setTimeout(()=>runFetch(query),wait);
+      }else{
+        runFetch(query);
+      }
+    },debounceDelay);
   });
 }
 
 function registerUser(){
   const name=document.getElementById('reg-name').value.trim();
   const pin=document.getElementById('reg-pin').value;
-  const email=document.getElementById('reg-email').value.trim();
+  const emailInput=document.getElementById('reg-email');
+  const email=emailInput.value.trim();
   const city=document.getElementById('reg-city').value.trim();
   const fav=document.getElementById('reg-player').value;
-  if(!name||!pin||!email||!city||!fav){showToast("Vyplň všechny údaje","error");return;}
+  if(!name||!pin||!email||!city||!fav){showToast("Vyplň všechny údaje včetně e-mailu","error");return;}
+  if(!emailInput.checkValidity()){showToast("Zadej platný email","error");return;}
   if(pin.length<4){showToast("PIN min 4 znaky","error");return;}
 
   // Check name unique
@@ -1166,9 +1200,11 @@ function setPlayerTip(type){
   if(!pid) return;
   const currentType=currentPrediction.playerTips[pid];
   if(type&&type!==currentType){
-    const count=Object.entries(currentPrediction.playerTips||{}).filter(([id,t])=>t===type&&parseInt(id)!==pid).length;
-    if(count>=2){
-      showToast(`Tip na ${type==='goal'?'gól':'asistenci'} můžeš dát jen 2 hráčům`,"error");
+    const tipEntries=Object.entries(currentPrediction.playerTips||{});
+    const currentPlayerId=String(pid);
+    const existingTipCount=tipEntries.filter(([id,t])=>t===type&&id!==currentPlayerId).length;
+    if(existingTipCount>=2){
+      showToast(`Tip na ${type==='goal'?'gól':'asistenci'} můžeš dát pouze 2 hráčům`,"error");
       return;
     }
   }
