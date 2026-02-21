@@ -311,7 +311,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
   </div>
   <div class="hero-stats">
     <div class="hero-stat"><div class="num" id="hero-users-count">0</div><div class="label">Hráčů</div></div>
-    <div class="hero-stat"><div class="num">16</div><div class="label">Hráčů Sigmy</div></div>
+    <div class="hero-stat"><div class="num" id="hero-players-count">0</div><div class="label">Hráčů Sigmy</div></div>
     <div class="hero-stat"><div class="num">∞</div><div class="label">Zábavy</div></div>
   </div>
 </section>
@@ -725,7 +725,7 @@ function showApp(){
   setupMainApp();
 }
 
-function updateHeroStats(){document.getElementById('hero-users-count').textContent=Object.keys(allUsers).length;}
+function updateHeroStats(){document.getElementById('hero-users-count').textContent=Object.keys(allUsers).length;document.getElementById('hero-players-count').textContent=players.length;}
 
 /* ============================================================
    AUTH
@@ -943,10 +943,19 @@ function enablePredictions(en){
   document.getElementById('btn-scorer-select').classList.toggle('disabled',!en);
   document.querySelectorAll('#goals-grid .goal-chip').forEach(c=>c.classList.toggle('disabled',!en));
   document.getElementById('attendance').disabled=!en;
-  document.getElementById('btn-save-pred').style.display=en?'flex':'none';
+  const isAdmin=currentUser&&currentUser.name.toLowerCase()==='dohnos';
+  document.getElementById('btn-save-pred').style.display=(en&&isAdmin)?'flex':'none';
 }
 function enableLineup(en){
-  document.querySelectorAll('.slot').forEach(s=>s.classList.toggle('disabled',!en));
+  for(let i=0;i<11;i++){
+    const s=document.getElementById(`slot-${i}`);if(!s) continue;
+    if(en){s.classList.remove('disabled');}
+    else{
+      const pid=currentPrediction.lineup[i];
+      const interactive=(gamePhase==='lineup_locked'&&pid);
+      s.classList.toggle('disabled',!interactive);
+    }
+  }
 }
 
 /* ============================================================
@@ -1034,10 +1043,10 @@ function changeFormation(f){
 }
 
 function handleSlotClick(i){
-  if(gamePhase!=='open'&&gamePhase!=='lineup_locked'&&!currentPrediction.lineup[i]) return;
-  activeSlotIndex=i;
   const pid=currentPrediction.lineup[i];
   if(pid){
+    if(gamePhase!=='open'&&gamePhase!=='lineup_locked') return;
+    activeSlotIndex=i;
     const p=players.find(x=>x.id==pid);if(!p) return;
     document.getElementById('action-player-img').src=p.img;
     document.getElementById('action-player-name').innerText=p.name;
@@ -1046,7 +1055,7 @@ function handleSlotClick(i){
     openModal('action-modal');
   }else{
     if(gamePhase!=='open'){showToast("Sestavy jsou uzamčeny","error");return;}
-    modalContext='lineup';openSelectionModal();
+    activeSlotIndex=i;modalContext='lineup';openSelectionModal();
   }
 }
 
