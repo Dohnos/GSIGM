@@ -186,6 +186,8 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 /* SCORE PREDICTOR */
 .score-predictor{display:flex;align-items:center;justify-content:center;gap:16px;padding:20px;background:#f8fafc;border-radius:16px;border:1px solid #e2e8f0;margin-top:8px}
 .score-team{text-align:center;flex:1}
+.score-team-logo{width:34px;height:34px;margin:0 auto 6px;display:flex;align-items:center;justify-content:center}
+.score-team-logo img{width:100%;height:100%;object-fit:contain}
 .score-team label{display:block;font-weight:700;font-size:.8rem;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase}
 .score-input{width:70px;height:70px;border:3px solid #e2e8f0;border-radius:16px;font-size:2rem;font-weight:900;text-align:center;font-family:Poppins;background:#fff;color:var(--primary);outline:none;transition:var(--transition)}
 .score-input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(0,75,135,.1)}
@@ -339,7 +341,9 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
       <h2>Vytvoř si profil ✨</h2>
       <input type="text" id="reg-name" class="reg-input" placeholder="Přezdívka">
       <input type="password" id="reg-pin" class="reg-input" placeholder="PIN (min 4 znaky)">
-      <select id="reg-city" class="reg-input"><option value="">Odkud fandíš?</option><option>Olomouc</option><option>Prostějov</option><option>Přerov</option><option>Šumperk</option><option>Jiné</option></select>
+      <input type="email" id="reg-email" class="reg-input" placeholder="E-mail" aria-label="Zadejte váš email">
+      <input type="text" id="reg-city" class="reg-input" placeholder="Odkud fandíš? (min. 3 znaky)" list="reg-city-list" autocomplete="off" aria-label="Vyberte město, odkud fandíte">
+      <datalist id="reg-city-list"></datalist>
       <select id="reg-player" class="reg-input"><option value="">Oblíbený hráč?</option></select>
       <button class="btn-save" onclick="registerUser()"><i class="fa-solid fa-user-plus"></i> Registrovat</button>
       <div class="auth-back" onclick="backToHero()"><i class="fa-solid fa-arrow-left"></i> Zpět na úvod</div>
@@ -428,7 +432,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
         <div class="legend-box">
           <h4><i class="fa-solid fa-book-open"></i> Legenda bodování</h4>
           <div class="legend-items">
-            <div class="legend-item"><div class="l-icon" style="background:#dcfce7;color:#166534">11</div><div>Kompletní sestava</div><div class="l-pts">+11b</div></div>
+            <div class="legend-item"><div class="l-icon" style="background:#dcfce7;color:#166534">1</div><div>Kompletní sestava</div><div class="l-pts">+1b</div></div>
             <div class="legend-item"><div class="l-icon" style="background:#dbeafe;color:var(--primary)">⚽</div><div>Přesné skóre</div><div class="l-pts">+10b</div></div>
             <div class="legend-item"><div class="l-icon" style="background:#fef3c7;color:#b45309">1X2</div><div>Správný tip (V/R/P)</div><div class="l-pts">+3b</div></div>
             <div class="legend-item"><div class="l-icon" style="background:#fce7f3;color:#be185d">🎯</div><div>Střelec 1. gólu</div><div class="l-pts">+5b</div></div>
@@ -444,7 +448,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
         <div class="form-group">
           <label>Výsledek zápasu <span class="pts">Přesně +10b / Tip +3b</span></label>
           <div class="score-predictor" id="score-predictor">
-            <div class="score-team"><label>Sigma</label><input type="number" id="pred-score-home" class="score-input" min="0" max="20" placeholder="0" oninput="autoSave()"></div>
+            <div class="score-team"><div class="score-team-logo"><img data-sigma-logo alt="SK Sigma Olomouc logo"></div><label>Sigma</label><input type="number" id="pred-score-home" class="score-input" min="0" max="20" placeholder="0" oninput="autoSave()"></div>
             <div class="score-sep">:</div>
             <div class="score-team"><label id="pred-away-label">Soupeř</label><input type="number" id="pred-score-away" class="score-input" min="0" max="20" placeholder="0" oninput="autoSave()"></div>
           </div>
@@ -581,7 +585,10 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
    🔥 FIREBASE CONFIG — NAHRAĎ SVÝMI ÚDAJI
    ============================================================ */
 const sigmaLogoUrl="https://sigmafotbal.esports.cz/files/logos/SK%20SIGMA.png";
-document.querySelectorAll('[data-sigma-logo]').forEach((img)=>{img.src=sigmaLogoUrl;});
+document.querySelectorAll('[data-sigma-logo]').forEach((img)=>{
+  img.src=sigmaLogoUrl;
+  img.onerror=()=>{img.style.display='none';};
+});
 const firebaseConfig = {
   apiKey: "AIzaSyANSwvhcNvpNDgEBSpGjgqxoOB_1nG389M",
   authDomain: "gsigm-a71ec.firebaseapp.com",
@@ -666,6 +673,7 @@ let modalStack=[];
    ============================================================ */
 window.onload=()=>{
   populateRegSelects();
+  setupRegCityAutocomplete();
   buildGoalsGrid('goals-grid','user');
   buildGoalsGrid('admin-goals-grid','admin');
   setupAdminLists();
@@ -757,12 +765,70 @@ function populateRegSelects(){
   [...players].sort((a,b)=>a.name.localeCompare(b.name)).forEach(p=>sel.add(new Option(`${p.name} (${p.posFull})`,p.name)));
 }
 
+function setupRegCityAutocomplete(){
+  const input=document.getElementById('reg-city');
+  const list=document.getElementById('reg-city-list');
+  if(!input||!list) return;
+  const debounceDelay=400;
+  const minInterval=1000;
+  let timeoutId=null;
+  let errorShown=false;
+  let lastFetchAt=0;
+  const runFetch=(query)=>{
+    if(input.value.trim()!==query) return;
+    lastFetchAt=Date.now();
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=6&accept-language=cs&q=${encodeURIComponent(query)}`,{
+      headers:{
+        'Accept-Language':'cs',
+        'User-Agent':'Sigma Fantasy (contact: info@sigmafantasy.cz)'
+      }
+    })
+      .then(res=>{
+        if(!res.ok) throw new Error(`Autocomplete request failed (${res.status})`);
+        return res.json();
+      })
+      .then(data=>{
+        if(input.value.trim()!==query) return;
+        errorShown=false;
+        list.innerHTML='';
+        data.forEach(item=>{
+          const option=document.createElement('option');
+          option.value=item.display_name;
+          list.appendChild(option);
+        });
+      })
+      .catch(()=>{
+        list.innerHTML='';
+        if(!errorShown){
+          showToast("Našeptávač adres není dostupný, zadejte město ručně","error");
+          errorShown=true;
+        }
+      });
+  };
+  input.addEventListener('input',()=>{
+    const query=input.value.trim();
+    if(timeoutId) clearTimeout(timeoutId);
+    if(query.length<3){list.innerHTML='';return;}
+    timeoutId=setTimeout(()=>{
+      const wait=minInterval-(Date.now()-lastFetchAt);
+      if(wait>0){
+        timeoutId=setTimeout(()=>runFetch(query),wait);
+      }else{
+        runFetch(query);
+      }
+    },debounceDelay);
+  });
+}
+
 function registerUser(){
   const name=document.getElementById('reg-name').value.trim();
   const pin=document.getElementById('reg-pin').value;
-  const city=document.getElementById('reg-city').value;
+  const emailInput=document.getElementById('reg-email');
+  const email=emailInput.value.trim();
+  const city=document.getElementById('reg-city').value.trim();
   const fav=document.getElementById('reg-player').value;
-  if(!name||!pin||!city||!fav){showToast("Vyplň všechny údaje","error");return;}
+  if(!name||!pin||!email||!city||!fav){showToast("Vyplň všechny údaje včetně e-mailu","error");return;}
+  if(!emailInput.checkValidity()){showToast("Zadej platný email","error");return;}
   if(pin.length<4){showToast("PIN min 4 znaky","error");return;}
 
   // Check name unique
@@ -770,7 +836,7 @@ function registerUser(){
   if(names.includes(name.toLowerCase())){showToast("Přezdívka existuje","error");return;}
 
   const id='u_'+Date.now();
-  const userData={name,pin,city,favPlayer:fav,points:0,createdAt:Date.now()};
+  const userData={name,pin,email,city,favPlayer:fav,points:0,createdAt:Date.now()};
   db.ref(`users/${id}`).set(userData).then(()=>{
     currentUser={...userData,id,isMe:true};
     localStorage.setItem('sigma_session',JSON.stringify(currentUser));
@@ -1131,6 +1197,17 @@ function openSelectionModal(){
 
 function setPlayerTip(type){
   const pid=currentPrediction.lineup[activeSlotIndex];
+  if(!pid) return;
+  const currentType=currentPrediction.playerTips[pid];
+  if(type&&type!==currentType){
+    const tipEntries=Object.entries(currentPrediction.playerTips||{});
+    const currentPlayerId=String(pid);
+    const existingTipCount=tipEntries.filter(([id,t])=>t===type&&id!==currentPlayerId).length;
+    if(existingTipCount>=2){
+      showToast(`Tip na ${type==='goal'?'gól':'asistenci'} můžeš dát pouze 2 hráčům`,"error");
+      return;
+    }
+  }
   if(type===null) delete currentPrediction.playerTips[pid];else currentPrediction.playerTips[pid]=type;
   closeModal('action-modal');renderPlayersInSlots();showToast(type?`Tip: ${type==='goal'?'gól':'asistence'}`:"Tip zrušen","success");autoSave();
 }
@@ -1241,7 +1318,7 @@ function showEvaluation(){
   let total=0;const rows=[];
 
   const predsLineup=normalizeLineup(preds.lineup);
-  if(predsLineup.filter(Boolean).length===11){total+=11;rows.push(['Kompletní sestava','+11']);}
+  if(predsLineup.filter(Boolean).length===11){total+=1;rows.push(['Kompletní sestava','+1']);}
 
   if(preds.scoreHome==r.scoreHome&&preds.scoreAway==r.scoreAway){total+=10;rows.push(['Přesné skóre','+10']);}
   else{
@@ -1364,7 +1441,7 @@ function evaluateMatch(){
 
   Object.entries(matchPreds).forEach(([uid,pred])=>{
     let pts=0;
-    if(normalizeLineup(pred.lineup).filter(Boolean).length===11) pts+=11;
+    if(normalizeLineup(pred.lineup).filter(Boolean).length===11) pts+=1;
     if(pred.scoreHome==sh&&pred.scoreAway==sa) pts+=10;
     else{const o=Math.sign(sh-sa);const uo=Math.sign((pred.scoreHome||0)-(pred.scoreAway||0));if(o===uo) pts+=3;}
     if(pred.scorer==adminFirstScorer) pts+=5;
@@ -1438,7 +1515,7 @@ function renderMatchHistory(){
     const r=m.results||{};
     const tags=[];
     if(isEval&&r.scoreHome!=null){
-      if(normalizeLineup(pred.lineup).filter(Boolean).length===11) tags.push('Sestava +11');
+      if(normalizeLineup(pred.lineup).filter(Boolean).length===11) tags.push('Sestava +1');
       if(pred.scoreHome==r.scoreHome&&pred.scoreAway==r.scoreAway) tags.push('Přesné skóre +10');
       else{const o=Math.sign(r.scoreHome-r.scoreAway);const uo=Math.sign((pred.scoreHome||0)-(pred.scoreAway||0));if(o===uo) tags.push('Tip V/R/P +3');}
       if(pred.scorer==r.firstScorer) tags.push('1. střelec +5');
