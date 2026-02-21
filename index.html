@@ -65,6 +65,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .auth-form h2{font-size:1.5rem;margin-bottom:1.5rem;color:var(--primary)}
 .reg-input{width:100%;padding:15px 18px;border:2px solid #e2e8f0;border-radius:14px;font-family:Poppins;font-size:.95rem;margin-bottom:1rem;background:#f8fafc;outline:none;transition:var(--transition);color:var(--text-main)}
 .reg-input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px rgba(0,75,135,.08)}
+.reg-input:disabled{opacity:1;cursor:default;background:#f1f5f9;color:var(--text-main)}
 .auth-back{display:inline-flex;align-items:center;gap:8px;margin-top:1.5rem;color:var(--text-muted);font-weight:600;cursor:pointer;font-size:.9rem;transition:var(--transition)}
 .auth-back:hover{color:var(--primary)}
 
@@ -147,7 +148,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .form-btn{flex:1;border:none;padding:10px 8px;border-radius:10px;font-weight:700;color:var(--text-muted);background:transparent;cursor:pointer;transition:var(--transition);font-size:.82rem;font-family:Poppins}
 .form-btn.active{background:#fff;color:var(--primary);box-shadow:0 4px 12px rgba(0,0,0,.08)}
 .form-btn:hover:not(.active){background:rgba(0,75,135,.05)}
-.form-btn:disabled{opacity:.4;cursor:not-allowed}
+.form-btn:disabled{opacity:1;cursor:default;pointer-events:none}
 
 /* PITCH */
 .pitch-wrapper{display:flex;justify-content:center;margin-top:.5rem}
@@ -164,7 +165,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .slot.empty{background:rgba(255,255,255,.92);border:2.5px dashed rgba(0,75,135,.6);color:var(--primary);animation:pulseSlot 2.5s ease-in-out infinite}
 @keyframes pulseSlot{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}50%{box-shadow:0 0 0 12px rgba(255,255,255,0)}}
 .slot.filled{border:3px solid #fff;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.35)}
-.slot.disabled{cursor:not-allowed;opacity:.7}.slot.disabled:hover{transform:translate(-50%,-50%) scale(1)}
+.slot.disabled{cursor:default;opacity:1}.slot.disabled:hover{transform:translate(-50%,-50%) scale(1)}
 .slot img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:top}
 .player-name-tag{position:absolute;bottom:-20px;background:rgba(15,23,42,.85);color:#fff;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:8px;white-space:nowrap;pointer-events:none}
 .tip-badge{position:absolute;top:-6px;right:-6px;background:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.7rem;box-shadow:0 4px 10px rgba(0,0,0,.25);border:2px solid var(--secondary);z-index:15}
@@ -174,7 +175,8 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .goal-chip{padding:14px 0;border-radius:14px;text-align:center;font-weight:800;font-size:1.1rem;cursor:pointer;border:2px solid #e2e8f0;background:#f8fafc;transition:var(--transition);color:var(--text-muted)}
 .goal-chip:hover{border-color:var(--primary);background:#eff6ff;color:var(--primary)}
 .goal-chip.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 6px 16px rgba(0,75,135,.3);transform:scale(1.05)}
-.goal-chip:disabled,.goal-chip.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.goal-chip:disabled,.goal-chip.disabled{opacity:1;cursor:default;pointer-events:none}
+.goal-chip.disabled.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 
 /* SCORE PREDICTOR */
 .score-predictor{display:flex;align-items:center;justify-content:center;gap:16px;padding:20px;background:#f8fafc;border-radius:16px;border:1px solid #e2e8f0;margin-top:8px}
@@ -182,7 +184,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .score-team label{display:block;font-weight:700;font-size:.8rem;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase}
 .score-input{width:70px;height:70px;border:3px solid #e2e8f0;border-radius:16px;font-size:2rem;font-weight:900;text-align:center;font-family:Poppins;background:#fff;color:var(--primary);outline:none;transition:var(--transition)}
 .score-input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(0,75,135,.1)}
-.score-input:disabled{opacity:.4;cursor:not-allowed}
+.score-input:disabled{opacity:1;cursor:default;background:#f1f5f9;color:var(--primary)}
 .score-sep{font-size:2rem;font-weight:900;color:#cbd5e1}
 
 /* FORMS */
@@ -191,7 +193,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .pts{color:var(--primary-light);font-size:.72rem;background:#eff6ff;padding:3px 8px;border-radius:8px;font-weight:700}
 .visual-select-btn{width:100%;padding:12px 14px;border:2px solid #e2e8f0;border-radius:14px;background:#f8fafc;display:flex;align-items:center;gap:12px;cursor:pointer;transition:var(--transition);font-family:Poppins}
 .visual-select-btn:hover{border-color:var(--primary);background:#eff6ff}
-.visual-select-btn.disabled{opacity:.5;pointer-events:none}
+.visual-select-btn.disabled{opacity:1;pointer-events:none;cursor:default}
 .visual-select-btn img{width:42px;height:42px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,.1);border:2px solid #fff;object-fit:cover;object-position:top}
 .icon-placeholder{width:42px;height:42px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:1.1rem;flex-shrink:0}
 .vs-text{flex:1;font-weight:700;font-size:.95rem}.vs-pos{font-size:.72rem;color:#fff;background:var(--primary);padding:3px 8px;border-radius:8px;font-weight:600}
@@ -208,6 +210,18 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .stat-card:nth-child(2) .stat-icon{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#b45309}
 .stat-card:nth-child(3) .stat-icon{background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#059669}
 .stat-value{font-size:1.4rem;font-weight:900;line-height:1}.stat-label{font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-top:3px}
+
+/* MATCH HISTORY */
+.match-history-title{font-size:.95rem;font-weight:800;color:var(--primary);margin:1.2rem 0 .8rem;display:flex;align-items:center;gap:8px}
+.match-history-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:14px 16px;margin-bottom:8px;transition:var(--transition)}
+.match-history-item:hover{box-shadow:0 4px 12px rgba(0,0,0,.05)}
+.mh-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.mh-match{font-weight:700;font-size:.9rem}.mh-pts{font-weight:900;color:var(--success);font-size:1rem;background:#dcfce7;padding:3px 10px;border-radius:10px}
+.mh-pts.zero{color:var(--text-muted);background:#f1f5f9}
+.mh-round{font-size:.72rem;color:var(--text-muted);font-weight:600}
+.mh-breakdown{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.mh-tag{font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:8px;background:#eff6ff;color:var(--primary);border:1px solid #dbeafe}
+.mh-empty{text-align:center;color:var(--text-muted);font-size:.85rem;padding:20px 0}
 
 /* LEADERBOARD */
 .lb-item{display:flex;align-items:center;gap:12px;padding:11px 14px;background:#f8fafc;border-radius:14px;margin-bottom:8px;border:1px solid #e2e8f0;cursor:pointer;transition:var(--transition)}
@@ -395,6 +409,8 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
           <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-bullseye"></i></div><div class="stat-value" id="my-predictions">0</div><div class="stat-label">Predikcí</div></div>
           <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-ranking-star"></i></div><div class="stat-value" id="my-rank">-</div><div class="stat-label">Pořadí</div></div>
         </div>
+        <div class="match-history-title"><i class="fa-solid fa-clock-rotate-left"></i> Historie tipů</div>
+        <div id="match-history-container"></div>
       </div>
     </div>
 
@@ -423,9 +439,9 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
         <div class="form-group">
           <label>Výsledek zápasu <span class="pts">Přesně +10b / Tip +3b</span></label>
           <div class="score-predictor" id="score-predictor">
-            <div class="score-team"><label>Sigma</label><input type="number" id="pred-score-home" class="score-input" min="0" max="20" placeholder="0"></div>
+            <div class="score-team"><label>Sigma</label><input type="number" id="pred-score-home" class="score-input" min="0" max="20" placeholder="0" oninput="autoSave()"></div>
             <div class="score-sep">:</div>
-            <div class="score-team"><label id="pred-away-label">Soupeř</label><input type="number" id="pred-score-away" class="score-input" min="0" max="20" placeholder="0"></div>
+            <div class="score-team"><label id="pred-away-label">Soupeř</label><input type="number" id="pred-score-away" class="score-input" min="0" max="20" placeholder="0" oninput="autoSave()"></div>
           </div>
         </div>
 
@@ -447,7 +463,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
         <!-- ATTENDANCE -->
         <div class="form-group">
           <label>Návštěvnost <span class="pts">Přesně +5b / ±1000 +2b</span></label>
-          <input type="number" id="attendance" class="reg-input" placeholder="Např. 6500" style="margin:0">
+          <input type="number" id="attendance" class="reg-input" placeholder="Např. 6500" style="margin:0" oninput="autoSave()">
         </div>
 
         <button class="btn-save" id="btn-save-pred" onclick="savePrediction()"><i class="fa-solid fa-floppy-disk"></i> Uložit predikci</button>
@@ -521,7 +537,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
   <div class="modal-header"><h3>Akce hráče</h3><button class="close-btn" onclick="closeModal('action-modal')"><i class="fa-solid fa-xmark"></i></button></div>
   <div class="modal-body">
     <div style="text-align:center;margin-bottom:1.5rem">
-      <img id="action-player-img" src="" style="width:75px;height:75px;border-radius:50%;border:3px solid var(--primary);box-shadow:0 8px 20px rgba(0,0,0,.15)">
+      <img id="action-player-img" src="" style="width:clamp(80px,25vw,120px);height:clamp(80px,25vw,120px);border-radius:50%;border:3px solid var(--primary);box-shadow:0 8px 20px rgba(0,0,0,.15);object-fit:cover;object-position:top">
       <h2 id="action-player-name" style="margin:10px 0 2px;font-size:1.3rem"></h2>
       <div id="action-player-pos" style="color:var(--text-muted);font-weight:700;font-size:.85rem"></div>
     </div>
@@ -926,7 +942,7 @@ function enablePredictions(en){
   document.getElementById('btn-scorer-select').classList.toggle('disabled',!en);
   document.querySelectorAll('#goals-grid .goal-chip').forEach(c=>c.classList.toggle('disabled',!en));
   document.getElementById('attendance').disabled=!en;
-  document.getElementById('btn-save-pred').disabled=!en;
+  document.getElementById('btn-save-pred').style.display=en?'flex':'none';
 }
 function enableLineup(en){
   document.querySelectorAll('.slot').forEach(s=>s.classList.toggle('disabled',!en));
@@ -974,7 +990,7 @@ function buildGoalsGrid(containerId,type){
       if(chip.classList.contains('disabled')) return;
       c.querySelectorAll('.goal-chip').forEach(x=>x.classList.remove('active'));
       chip.classList.add('active');
-      if(type==='user') currentPrediction.totalGoals=i;
+      if(type==='user'){currentPrediction.totalGoals=i;autoSave();}
       else adminTotalGoals=i;
     };
     c.appendChild(chip);
@@ -1013,6 +1029,7 @@ function changeFormation(f){
   currentPrediction.formation=f;
   document.querySelectorAll('#formation-tabs .form-btn').forEach(b=>b.classList.toggle('active',b.innerText===f));
   updatePitchPositions();
+  autoSave();
 }
 
 function handleSlotClick(i){
@@ -1075,9 +1092,9 @@ function openSelectionModal(){
     if(!disabled){
       div.onclick=()=>{
         if(modalContext==='lineup'){
-          currentPrediction.lineup[activeSlotIndex]=p.id;renderPlayersInSlots();showToast(`${p.name} přidán`,"success");
+          currentPrediction.lineup[activeSlotIndex]=p.id;renderPlayersInSlots();showToast(`${p.name} přidán`,"success");autoSave();
         }else{
-          currentPrediction.scorer=p.id;updateVisualScorerBtn();showToast(`Tip: ${p.name}`,"success");
+          currentPrediction.scorer=p.id;updateVisualScorerBtn();showToast(`Tip: ${p.name}`,"success");autoSave();
         }
         closeModal('player-modal');
       };
@@ -1090,14 +1107,14 @@ function openSelectionModal(){
 function setPlayerTip(type){
   const pid=currentPrediction.lineup[activeSlotIndex];
   if(type===null) delete currentPrediction.playerTips[pid];else currentPrediction.playerTips[pid]=type;
-  closeModal('action-modal');renderPlayersInSlots();showToast(type?`Tip: ${type==='goal'?'gól':'asistence'}`:"Tip zrušen","success");
+  closeModal('action-modal');renderPlayersInSlots();showToast(type?`Tip: ${type==='goal'?'gól':'asistence'}`:"Tip zrušen","success");autoSave();
 }
 function removePlayerFromPitch(){
   if(gamePhase!=='open'){showToast("Uzamčeno","error");return;}
   const pid=currentPrediction.lineup[activeSlotIndex];
   if(pid) delete currentPrediction.playerTips[pid];
   currentPrediction.lineup[activeSlotIndex]=null;
-  closeModal('action-modal');renderPlayersInSlots();
+  closeModal('action-modal');renderPlayersInSlots();autoSave();
 }
 function openScorerSelectModal(){
   if(gamePhase==='all_locked'||gamePhase==='waiting'||gamePhase==='evaluated'){showToast("Tipy uzamčeny","error");return;}
@@ -1131,6 +1148,23 @@ function savePrediction(){
     showToast("Predikce uložena! ✅","success");
     updateMyStats();
   }).catch(e=>showToast("Chyba: "+e.message,"error"));
+}
+
+let autosaveTimer=null;
+function autoSave(){
+  if(!currentMatchId||!currentUser) return;
+  if(gamePhase==='all_locked'||gamePhase==='waiting'||gamePhase==='evaluated') return;
+  clearTimeout(autosaveTimer);
+  autosaveTimer=setTimeout(()=>{
+    currentPrediction.scoreHome=parseInt(document.getElementById('pred-score-home').value);
+    currentPrediction.scoreAway=parseInt(document.getElementById('pred-score-away').value);
+    currentPrediction.attendance=document.getElementById('attendance').value;
+    const data={...currentPrediction,savedAt:Date.now()};
+    db.ref(`predictions/${currentMatchId}/${currentUser.id}`).set(data).then(()=>{
+      showToast("Automaticky uloženo ✅","success");
+      updateMyStats();
+    }).catch(e=>showToast("Chyba: "+e.message,"error"));
+  },1500);
 }
 
 function loadMyPrediction(){
@@ -1346,6 +1380,37 @@ function updateMyStats(){
   const users=Object.entries(allUsers).map(([id,u])=>({id,points:u.points||0})).sort((a,b)=>b.points-a.points);
   const rank=users.findIndex(u=>u.id===currentUser.id)+1;
   document.getElementById('my-rank').textContent=rank>0?`${rank}.`:'—';
+  renderMatchHistory();
+}
+
+function renderMatchHistory(){
+  const c=document.getElementById('match-history-container');if(!c||!currentUser) return;
+  const items=[];
+  Object.entries(allMatches).sort(([,a],[,b])=>b.datetime-a.datetime).forEach(([mid,m])=>{
+    const pred=(allPredictions[mid]||{})[currentUser.id];
+    if(!pred) return;
+    const pts=pred.earnedPoints;
+    const isEval=m.status==='evaluated';
+    const r=m.results||{};
+    const tags=[];
+    if(isEval&&r.scoreHome!=null){
+      if(pred.lineup&&pred.lineup.filter(Boolean).length===11) tags.push('Sestava +11');
+      if(pred.scoreHome==r.scoreHome&&pred.scoreAway==r.scoreAway) tags.push('Přesné skóre +10');
+      else{const o=Math.sign(r.scoreHome-r.scoreAway);const uo=Math.sign((pred.scoreHome||0)-(pred.scoreAway||0));if(o===uo) tags.push('Tip V/R/P +3');}
+      if(pred.scorer==r.firstScorer) tags.push('1. střelec +5');
+      if(pred.totalGoals!=null&&pred.totalGoals==r.totalGoals) tags.push('Góly +3');
+      if(pred.attendance&&r.attendance){if(parseInt(pred.attendance)==r.attendance) tags.push('Návštěvnost +5');else if(Math.abs(parseInt(pred.attendance)-r.attendance)<=1000) tags.push('Návštěvnost ±1000 +2');}
+      Object.entries(pred.playerTips||{}).forEach(([pid,type])=>{
+        const id=parseInt(pid);const p=players.find(x=>x.id===id);
+        if(type==='goal'&&(r.goalScorers||[]).includes(id)) tags.push(`${p?p.name:'?'} gól +4`);
+        if(type==='assist'&&(r.assistPlayers||[]).includes(id)) tags.push(`${p?p.name:'?'} asist. +3`);
+      });
+    }
+    const d=new Date(m.datetime);
+    const dateStr=d.toLocaleDateString('cs-CZ',{day:'numeric',month:'short',year:'numeric'});
+    items.push(`<div class="match-history-item"><div class="mh-header"><div><div class="mh-match">Sigma vs ${m.opponent||'?'}</div><div class="mh-round">${m.round||''} · ${dateStr}</div></div>${isEval?`<div class="mh-pts${pts===0?' zero':''}">${pts!=null?'+'+pts:'—'}</div>`:'<div class="mh-pts zero">⏳</div>'}</div>${tags.length?'<div class="mh-breakdown">'+tags.map(t=>`<span class="mh-tag">${t}</span>`).join('')+'</div>':''}</div>`);
+  });
+  c.innerHTML=items.length?items.join(''):'<div class="mh-empty">Zatím žádné tipy</div>';
 }
 
 function openProfile(id){
