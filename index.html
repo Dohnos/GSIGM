@@ -15,7 +15,8 @@
 :root{
   --primary:#004b87;--primary-light:#0d6efd;--primary-dark:#002244;
   --secondary:#f39c12;--secondary-light:#fbbf24;
-  --bg-body:#f0f4ff;--card-bg:#fff;--text-main:#1e293b;--text-muted:#64748b;
+  --sigma-bg-image:url('https://sigmafotbal.cz/assets/images/academy-bg.webp');
+  --bg-body:linear-gradient(rgba(2,10,20,.55),rgba(2,10,20,.55)),var(--sigma-bg-image) center/cover no-repeat fixed;--card-bg:#fff;--text-main:#1e293b;--text-muted:#64748b;
   --pitch-grass:#238c26;--pitch-lines:rgba(255,255,255,.55);
   --danger:#ef4444;--success:#10b981;--info:#3b82f6;--warning:#f59e0b;
   --radius:20px;--shadow:0 10px 30px rgba(0,0,0,.06);
@@ -27,11 +28,12 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
 
 /* HERO */
-#section-hero{min-height:100vh;background:linear-gradient(135deg,#000d1a 0%,#001a33 25%,var(--primary) 50%,#0077cc 75%,#0099ff 100%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 1.5rem;position:relative;overflow:hidden}
+#section-hero{min-height:100vh;background:var(--bg-body);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 1.5rem;position:relative;overflow:hidden}
 .hero-particles{position:absolute;top:0;left:0;width:200%;height:200%;opacity:.12;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:40px 40px;animation:floatBg 60s linear infinite}
 @keyframes floatBg{from{background-position:0 0}to{background-position:400px 400px}}
 .hero-glow{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(243,156,18,.12),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
-.animated-ball{font-size:5rem;margin-bottom:1.5rem;animation:bounceSpin 3s ease-in-out infinite;filter:drop-shadow(0 20px 25px rgba(0,0,0,.5))}
+.animated-logo{width:120px;height:120px;margin-bottom:1.5rem;animation:bounceSpin 3s ease-in-out infinite;filter:drop-shadow(0 20px 25px rgba(0,0,0,.5));object-fit:contain}
+@media (prefers-reduced-motion: reduce){.animated-logo{animation:none}}
 @keyframes bounceSpin{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-35px) rotate(180deg)}}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);backdrop-filter:blur(10px);padding:8px 20px;border-radius:50px;border:1px solid rgba(255,255,255,.2);font-size:.85rem;font-weight:600;margin-bottom:1rem;color:#fbbf24}
 .hero-title{font-size:clamp(2.5rem,6vw,4rem);font-weight:900;text-transform:uppercase;letter-spacing:3px;text-shadow:0 5px 20px rgba(0,0,0,.5);line-height:1.1}
@@ -54,7 +56,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .hero-stat{text-align:center}.hero-stat .num{font-size:2rem;font-weight:900;color:var(--secondary)}.hero-stat .label{font-size:.8rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px}
 
 /* AUTH */
-#section-auth{display:none;align-items:center;justify-content:center;min-height:100vh;padding:2rem 1rem;background:linear-gradient(135deg,#f0f4ff,#e0e7ff)}
+#section-auth{display:none;align-items:center;justify-content:center;min-height:100vh;padding:2rem 1rem;background:var(--bg-body)}
 .auth-card{background:#fff;padding:3rem 2rem;border-radius:28px;box-shadow:0 25px 50px rgba(0,0,0,.08);width:100%;max-width:440px;text-align:center;border:1px solid #e2e8f0;position:relative;overflow:hidden}
 .auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--secondary),var(--primary))}
 .auth-tabs{display:flex;background:#f1f5f9;border-radius:16px;padding:5px;margin-bottom:2rem}
@@ -74,7 +76,9 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 #section-app.active{display:block;opacity:1}
 .app-header{background:linear-gradient(135deg,#001529,var(--primary),#0066aa);color:#fff;padding:1.2rem 1.5rem 1.4rem;border-bottom-left-radius:28px;border-bottom-right-radius:28px;box-shadow:0 12px 30px rgba(0,75,135,.25);margin-bottom:2rem;position:sticky;top:0;z-index:100}
 .header-content{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
-.header-left h1{margin:0;font-size:1.4rem;display:flex;align-items:center;gap:8px}.header-left h1 i{color:var(--secondary)}
+.header-left h1{margin:0;font-size:1.4rem;display:flex;align-items:center;gap:10px}.header-left h1 i{color:var(--secondary)}
+.sigma-logo{width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.35))}
+.sigma-logo.small{width:36px;height:36px}
 .header-left p{margin:4px 0 0;font-size:.85rem;color:#94a3b8;font-weight:500}
 .header-right{cursor:pointer;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);padding:8px 18px;border-radius:50px;border:1px solid rgba(255,255,255,.15);transition:var(--transition)}
 .header-right:hover{background:rgba(255,255,255,.2)}
@@ -92,8 +96,9 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 .match-league i{color:var(--secondary);margin-right:4px}
 .match-teams{display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:14px;position:relative;z-index:2}
 .match-team{text-align:center;flex:1}
-.team-logo{width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 8px;box-shadow:0 8px 20px rgba(0,0,0,.3);font-weight:900}
-.team-home .team-logo{background:linear-gradient(135deg,#004b87,#0066cc);color:#fff}
+.team-logo{width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 8px;box-shadow:0 8px 20px rgba(0,0,0,.3);font-weight:900;overflow:hidden}
+.team-logo img{width:100%;height:100%;object-fit:contain;padding:6px}
+.team-home .team-logo{background:rgba(255,255,255,.95)}
 .team-away .team-logo{background:linear-gradient(135deg,#1e293b,#475569);color:#fff}
 .team-name{font-weight:700;font-size:.85rem}
 .match-vs{font-size:1.6rem;font-weight:900;color:rgba(255,255,255,.25);text-transform:uppercase}
@@ -296,7 +301,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 <!-- HERO -->
 <section id="section-hero">
   <div class="hero-particles"></div><div class="hero-glow"></div>
-  <div class="animated-ball">⚽</div>
+  <img class="animated-logo" data-sigma-logo alt="SK Sigma Olomouc logo">
   <div class="hero-badge"><i class="fa-solid fa-bolt"></i> Sezóna 2025/26</div>
   <h1 class="hero-title">Sigma Fantasy<span>Fan Edition</span></h1>
   <p class="hero-subtitle">Sestav svůj tým z hráčů SK Sigma Olomouc, tipuj výsledky zápasů a bojuj o pozici v žebříčku!</p>
@@ -346,7 +351,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 <section id="section-app">
   <div class="app-header">
     <div class="header-content">
-      <div class="header-left"><h1><i class="fa-solid fa-shield-halved"></i> Sigma Fantasy</h1><p id="user-welcome">Vítej</p></div>
+      <div class="header-left"><h1><img class="sigma-logo small" data-sigma-logo alt="SK Sigma Olomouc logo"> Sigma Fantasy</h1><p id="user-welcome">Vítej</p></div>
       <div class="header-right" onclick="openProfile('me')"><span class="header-pts" id="user-top-pts">0 b</span><img class="header-avatar" id="user-top-avatar" src=""></div>
     </div>
   </div>
@@ -360,7 +365,7 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
         <div class="match-widget" id="match-widget">
           <div class="match-league"><i class="fa-solid fa-futbol"></i> <span id="match-league-text">Chance Liga</span></div>
           <div class="match-teams">
-            <div class="match-team team-home"><div class="team-logo">Σ</div><div class="team-name">Sigma Olomouc</div></div>
+            <div class="match-team team-home"><div class="team-logo"><img data-sigma-logo alt="SK Sigma Olomouc logo"></div><div class="team-name">Sigma Olomouc</div></div>
             <div class="match-vs">VS</div>
             <div class="match-team team-away"><div class="team-logo" id="away-logo">?</div><div class="team-name" id="away-name">???</div></div>
           </div>
@@ -575,6 +580,8 @@ body{font-family:Poppins,sans-serif;background:var(--bg-body);color:var(--text-m
 /* ============================================================
    🔥 FIREBASE CONFIG — NAHRAĎ SVÝMI ÚDAJI
    ============================================================ */
+const sigmaLogoUrl="https://sigmafotbal.esports.cz/files/logos/SK%20SIGMA.png";
+document.querySelectorAll('[data-sigma-logo]').forEach((img)=>{img.src=sigmaLogoUrl;});
 const firebaseConfig = {
   apiKey: "AIzaSyANSwvhcNvpNDgEBSpGjgqxoOB_1nG389M",
   authDomain: "gsigm-a71ec.firebaseapp.com",
